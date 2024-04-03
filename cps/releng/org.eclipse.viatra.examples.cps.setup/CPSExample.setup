@@ -29,7 +29,7 @@
       name="viatra.repository.url"
       label="VIATRA Update site">
     <choice
-        value="http://download.eclipse.org/viatra/updates/integration"
+        value="http://download.eclipse.org/viatra/updates/integration/latest"
         label="Integration"/>
     <choice
         value="https://hudson.eclipse.org/viatra/job/viatra-master/lastSuccessfulBuild/artifact/releng/org.eclipse.viatra.update/target/repository/"
@@ -71,17 +71,17 @@
   <setupTask
       xsi:type="git:GitCloneTask"
       id="git.clone.viatra.cps"
-      remoteURI="viatra/org.eclipse.viatra.examples"
+      remoteURI="eclipse-viatra/org.eclipse.viatra.examples"
       checkoutBranch="${viatra.exampes.git.branch}">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
           key="inherit">
-        <value>eclipse.git.gerrit.remoteURIs</value>
+        <value>github.remoteURIs</value>
       </detail>
       <detail
           key="label">
-        <value>${scope.project.label} Git or Gerrit repository</value>
+        <value>${scope.project.label} Github repository</value>
       </detail>
       <detail
           key="target">
@@ -205,7 +205,7 @@
   <setupTask
       xsi:type="setup:EclipseIniTask"
       option="-Doomph.redirection.viatra.cps.demo.setup"
-      value="=https://git.eclipse.org/c/viatra/org.eclipse.viatra.examples.git/plain/cps/releng/org.eclipse.viatra.examples.cps.setup/CPSExample.setup->${git.clone.viatra.cps.location|uri}/cps/releng/org.eclipse.viatra.examples.cps.setup/CPSExample.setup"
+      value="=https://github.com/eclipse-viatra/org.eclipse.viatra.examples/blob/master/cps/releng/org.eclipse.viatra.examples.cps.setup/CPSExample.setup->${git.clone.viatra.cps.location|uri}/cps/releng/org.eclipse.viatra.examples.cps.setup/CPSExample.setup"
       vm="true"/>
   <setupTask
       xsi:type="setup:EclipseIniTask"
