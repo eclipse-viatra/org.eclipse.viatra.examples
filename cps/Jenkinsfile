@@ -1,9 +1,5 @@
  pipeline {
-	agent {
-        kubernetes {
-            label 'centos7'
-        }
-    }
+	agent any
     
 	parameters {
         booleanParam description: 'Enables deployment of the demonstrator to download.eclipse.org', name: 'DEPLOY_DEMONSTRATOR'
