@@ -1,0 +1,53 @@
+ pipeline {
+	agent {
+        kubernetes {
+            label 'centos7'
+        }
+    }
+    
+	parameters {
+        booleanParam description: 'Enables deployment of the demonstrator to download.eclipse.org', name: 'DEPLOY_DEMONSTRATOR'
+        string defaultValue: 'https://ci.eclipse.org/viatra/job/VIATRA/job/master/lastBuild/artifact/releng/org.eclipse.viatra.update/target/repository/',
+            description: 'p2 repository to get VIATRA from',
+            name: 'VIATRA_REPOSITORY'
+	}
+	options {
+		buildDiscarder(logRotator(numToKeepStr: '5'))
+        timeout(30 /*minutes*/) 
+	}
+	
+	tools {
+        maven 'apache-maven-3.9.6'
+        jdk 'openjdk-jdk17-latest' // Java 11 is selected using Maven toolchains
+    }
+
+	stages {
+		stage('Build') { 
+			steps {
+				sh "mvn -U -B -f releng/org.eclipse.viatra.parent.core/pom.xml ${SIGN_BUILD_PARAMETER} -Dmaven.repo.local=$WORKSPACE/.repository clean verify"
+			}
+		}
+		stage('Deploy Demonstrator') {
+		  when {expression { return params.DEPLOY_DEMONSTRATOR }}
+		  steps {
+		      sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+		          sh '''
+                        export PRODUCTS=$WORKSPACE/releng/org.eclipse.viatra.update
+                        export BUILD_DIR=/home/data/httpd/download.eclipse.org/viatra/examples/cps/application
+                        
+                        # Upload products to download.eclipse.org
+                        scp -o BatchMode=yes $PRODUCTS genie.viatra@projects-storage.eclipse.org:$BUILD_DIR
+		          '''
+		      }
+		  }
+		}
+	}
+
+	post {
+		always {
+            archiveArtifacts artifacts: 'cps/releng/org.eclipse.viatra.examples.cps.application.product/target/products/*.zip'
+			archiveArtifacts artifacts: 'cps/releng/org.eclipse.viatra.examples.cps.update/target/repository/*'
+			junit testResults: '**/tests/**/target/surefire-reports/*.xml'
+		}
+    }
+}
