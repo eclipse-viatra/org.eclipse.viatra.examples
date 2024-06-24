@@ -78,12 +78,12 @@
 		</profile>
 	</profiles>
 	<properties>
-		<tycho.version>1.7.0</tycho.version>
-		<xtend.compiler.version>2.22.0</xtend.compiler.version>
+		<tycho.version>4.0.6</tycho.version>
+		<xtend.compiler.version>2.33.0</xtend.compiler.version>
 		<viatra.repository.url>http://download.eclipse.org/viatra/updates/integration/latest</viatra.repository.url>
 		<viatra.compiler.version>2.9.0-SNAPSHOT</viatra.compiler.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
@@ -181,24 +181,11 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <!-- add JavaFX to classpath (jfxswt.jar for Java 8) -->
-                        <extraClasspathElements>
-                            <extraClasspathElement>
-                                <groupId>com.oracle</groupId>
-                                <artifactId>javafxswt</artifactId>
-                                <version>8.0.0-SNAPSHOT</version>
-                                <systemPath>${java.home}/lib/jfxswt.jar</systemPath>
-                                <scope>system</scope>
-                            </extraClasspathElement>
-                        </extraClasspathElements>
                         <useJDK>BREE</useJDK>
                         <useProjectSettings>true</useProjectSettings>
                         <excludeResources>
                             <excludeResource>**/.gitignore</excludeResource>
                         </excludeResources>
-                        <compilerArgs>
-                          <compilerArg>-err:-forbidden</compilerArg>
-                        </compilerArgs>
                     </configuration>
                 </plugin>
 				<plugin>
