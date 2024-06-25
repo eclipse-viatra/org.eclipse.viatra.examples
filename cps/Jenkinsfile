@@ -20,7 +20,7 @@
 	stages {
 		stage('Build') { 
 			steps {
-				sh "mvn -U -B -f releng/org.eclipse.viatra.parent.core/pom.xml ${SIGN_BUILD_PARAMETER} -Dmaven.repo.local=$WORKSPACE/.repository clean verify"
+				sh "mvn -U -B -f releng/org.eclipse.viatra.parent.core/pom.xml -Dmaven.repo.local=$WORKSPACE/.repository clean verify"
 			}
 		}
 		stage('Deploy Demonstrator') {
