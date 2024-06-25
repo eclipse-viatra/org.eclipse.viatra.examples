@@ -20,7 +20,7 @@
 	stages {
 		stage('Build') { 
 			steps {
-				sh "mvn -U -B -f releng/org.eclipse.viatra.parent.core/pom.xml -Dmaven.repo.local=$WORKSPACE/.repository clean verify"
+				sh "mvn -U -B -f cps/pom.xml -Dmaven.repo.local=$WORKSPACE/.repository clean verify"
 			}
 		}
 		stage('Deploy Demonstrator') {
@@ -28,7 +28,7 @@
 		  steps {
 		      sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
 		          sh '''
-                        export PRODUCTS=$WORKSPACE/releng/org.eclipse.viatra.update
+                        export PRODUCTS=$WORKSPACE/cps/releng/org.eclipse.viatra.examples.cps.update/target/repository/*.zip
                         export BUILD_DIR=/home/data/httpd/download.eclipse.org/viatra/examples/cps/application
                         
                         # Upload products to download.eclipse.org
